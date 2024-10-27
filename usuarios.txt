@@ -1,0 +1,18 @@
+admin credentials:
+	admin
+	12345
+users credentials:
+	larss (lars ulrich), rol cliente (3)
+	jar-0999999999
+
+	james (james hetfield), rol cliente (3)
+	jar-0952211910
+
+	abeleduardo (abel aspiazu), rol admin (1)
+	Abel123#
+
+	marioflores (Mario Flores), rol empleado (2)
+	Mario123#
+
+	mariaflores (Maria Flores), rol empleado (2)
+	Maria123#

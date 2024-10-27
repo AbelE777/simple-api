@@ -1,0 +1,6 @@
+roles
+1: admin
+2: empleado
+3: cliente
+
+
