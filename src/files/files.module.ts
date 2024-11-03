@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { UsersController } from './users.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Cliente, Persona, Usuario } from './entities';
+import { UsersController } from '../users/users.controller';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { FilesService } from './files.service';
+import { FilesController } from './files.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Files } from './entities/files.entity';
+import { FileGroup } from './entities/fileGroup.entity';
+import { Cliente, Persona, Usuario } from '../users/entities';
 @Module({
   imports: [
     MulterModule.register({
@@ -18,12 +21,14 @@ import { diskStorage } from 'multer';
         },
       }),
     }),
-    TypeOrmModule.forFeature([Persona]),
+    TypeOrmModule.forFeature([Files]),
+    TypeOrmModule.forFeature([FileGroup]),
     TypeOrmModule.forFeature([Usuario]),
     TypeOrmModule.forFeature([Cliente]),
+    TypeOrmModule.forFeature([Persona]),
   ],
-  providers: [UsersService],
-  controllers: [UsersController],
-  exports: [UsersService],
+  providers: [FilesService],
+  controllers: [FilesController],
+  exports: [FilesService],
 })
-export class UsersModule {}
+export class FilesModule {}

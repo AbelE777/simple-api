@@ -37,7 +37,6 @@ export class UsersService {
         email,
         rol,
       } = registerUserDto;
-      console.log(registerUserDto);
 
       const salt = await bcrypt.genSalt();
       const hashedPassword = await bcrypt.hash(password, salt);
@@ -112,7 +111,18 @@ export class UsersService {
   }
 
   async uploadFiles(files: Express.Multer.File[]) {
+    const savedFiles = files.map((file) => ({
+      filePath: file.path, // Ruta donde el archivo se guardó
+      fileName: file.filename, // Nombre del archivo en el servidor
+      originalName: file.originalname, // Nombre original del archivo
+    }));
+    console.log(savedFiles)
     console.log(files)
+
+    return {
+      message: 'Archivos subidos y guardados con éxito!',
+      files: savedFiles,
+    };
   }
 
   async updateprofilePic(

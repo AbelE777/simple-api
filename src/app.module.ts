@@ -5,21 +5,12 @@ import { Persona, Usuario, Cliente } from './users/entities';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigurationModule } from '../config/config.module';
 import { ConfigModule } from '@nestjs/config';
-import { MulterModule } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
+import { FilesModule } from './files/files.module';
+import { Files } from './files/entities/files.entity';
+import { FileGroup } from './files/entities/fileGroup.entity';
 
 @Module({
   imports: [
-    MulterModule.register({
-      storage: diskStorage({
-        destination: './uploads',
-        filename: (req, file, callback) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-          const newFilename = `${file.fieldname}-${uniqueSuffix}-${file.originalname}`;
-          callback(null, newFilename);
-        },
-      }),
-    }),
     ConfigurationModule,
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     TypeOrmModule.forRoot({
@@ -29,12 +20,13 @@ import { diskStorage } from 'multer';
       username: process.env.POSTGRES_USERNAME,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DATABASE,
-      entities: [Persona, Usuario, Cliente],
+      entities: [Persona, Usuario, Cliente, Files, FileGroup],
       synchronize: true,
     }),
     // ConfigModule.forRoot(),
     AuthModule,
     UsersModule,
+    FilesModule
   ],
   controllers: [],
   providers: [],

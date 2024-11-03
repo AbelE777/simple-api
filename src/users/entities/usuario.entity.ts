@@ -7,9 +7,11 @@ import {
   UpdateDateColumn,
   CreateDateColumn,
   Unique,
+  OneToMany,
 } from 'typeorm';
 import { Persona } from './persona.entity';
 import * as bcrypt from 'bcrypt';
+import { Files } from '../../files/entities/files.entity';
 
 @Entity()
 @Unique(['usuario'])
@@ -41,6 +43,9 @@ export class Usuario {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => Files, (files) => files.user_id)
+  files: Files[];
 
   async validatePassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);

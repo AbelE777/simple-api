@@ -36,14 +36,7 @@ export class UsersController {
   async uploadFiles(
     @UploadedFiles() files: Express.Multer.File[],
   ): Promise<any> {
-    this.usersService.uploadFiles(files)
-    // return {
-    //   message: 'Archivos subidos con éxito!',
-    //   files: files.map((file) => ({
-    //     filePath: file.path,
-    //     fileName: file.filename,
-    //   })),
-    // };
+    return await this.usersService.uploadFiles(files)
   }
 
   @Put('update-profile/:id')
