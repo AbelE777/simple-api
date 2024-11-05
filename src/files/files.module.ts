@@ -16,7 +16,7 @@ import { Cliente, Persona, Usuario } from '../users/entities';
         filename: (req, file, callback) => {
           // Genera un nombre de archivo único
           const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-          const newFilename = `${uniqueSuffix}-${file.originalname}`;
+          const newFilename = `${file.originalname}-${uniqueSuffix}`;
           callback(null, newFilename);
         },
       }),
