@@ -1,6 +1,8 @@
 admin credentials:
-	admin
-	12345
+	admin:12345
+	user-portete: 12345
+	user-florida: 12345
+	user-alborada: 12345
 users credentials:
 	larss (lars ulrich), rol cliente (3)
 	jar-0999999999

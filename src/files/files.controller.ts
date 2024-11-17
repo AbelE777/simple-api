@@ -1,10 +1,14 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   NotFoundException,
   Param,
   Post,
+  Query,
   Req,
   Res,
   UploadedFiles,
@@ -22,7 +26,6 @@ import * as mime from 'mime-types';
 import archiver = require('archiver');
 import { join } from 'path';
 import { existsSync } from 'fs';
-
 
 @Controller('files')
 export class FilesController {
@@ -42,8 +45,21 @@ export class FilesController {
 
   @Get('groups')
   @UseGuards(JwtAuthGuard)
-  async getFileGroupsWithMeta(): Promise<FileGroup[]> {
-    return await this.filesService.getFileGroupsWithMeta();
+  async getFileGroupsWithMeta(
+    @Req() req: any,
+    @Query() query: any,
+  ): Promise<FileGroup[]> {
+    let active = query.active
+    const userId = req?.user.id_usuario as number;
+    return await this.filesService.getFileGroupsWithMeta(userId, active);
+  }
+
+  @Delete('delete/:groupId')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async logicDeletion(@Param('groupId') id, @Query() query: any,) {
+    let active = query.active
+    return await this.filesService.logicDeletionOrRestore(id, active);
   }
 
   @Get('download/:id')

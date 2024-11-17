@@ -8,6 +8,8 @@ import { ConfigModule } from '@nestjs/config';
 import { FilesModule } from './files/files.module';
 import { Files } from './files/entities/files.entity';
 import { FileGroup } from './files/entities/fileGroup.entity';
+import { Sucursal } from './files/entities/sucursal.entity';
+import { UsuarioSucursal } from './files/entities/usuario-sucursal.entity';
 
 @Module({
   imports: [
@@ -20,7 +22,7 @@ import { FileGroup } from './files/entities/fileGroup.entity';
       username: process.env.POSTGRES_USERNAME,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DATABASE,
-      entities: [Persona, Usuario, Cliente, Files, FileGroup],
+      entities: [Persona, Usuario, Cliente, Files, FileGroup, Sucursal, UsuarioSucursal],
       synchronize: true,
     }),
     // ConfigModule.forRoot(),

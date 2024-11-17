@@ -12,6 +12,7 @@ import {
 import { Persona } from './persona.entity';
 import * as bcrypt from 'bcrypt';
 import { Files } from '../../files/entities/files.entity';
+import { UsuarioSucursal } from 'src/files/entities/usuario-sucursal.entity';
 
 @Entity()
 @Unique(['usuario'])
@@ -46,6 +47,9 @@ export class Usuario {
 
   @OneToMany(() => Files, (files) => files.user_id)
   files: Files[];
+
+  @OneToMany(() => UsuarioSucursal, (usuarioSucursal) => usuarioSucursal.usuario)
+  usuarioSucursales: UsuarioSucursal[];
 
   async validatePassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);

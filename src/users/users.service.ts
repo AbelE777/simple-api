@@ -93,7 +93,7 @@ export class UsersService {
   async findByUsername(usuario: string): Promise<Usuario> {
     return this.usuarioRepository.findOne({
       where: { usuario },
-      relations: ['fk_persona'],
+      relations: ['fk_persona','usuarioSucursales', 'usuarioSucursales.sucursal'],
     });
   }
 
@@ -149,7 +149,6 @@ export class UsersService {
     body: UpdatePersonData,
   ): Promise<Persona> {
     // buscamos por id
-    console.log('body', body);
     const persona = await this.personaRepository.findOne({
       where: { id_persona: id },
     });

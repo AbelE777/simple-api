@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, EntityManager } from 'typeorm';
 import { Files } from './entities/files.entity';
@@ -14,6 +14,17 @@ export class FilesService {
     @InjectRepository(FileGroup)
     private fileGroupRepository: Repository<FileGroup>,
   ) {}
+
+  async logicDeletionOrRestore(id: number, active: string): Promise<void> {
+    const result = await this.fileGroupRepository.update(
+      { id },
+      { active },
+    );
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Grupo con ID ${id} no encontrado`);
+    }
+  }
 
   async uploadFiles(
     files: Express.Multer.File[],
@@ -82,20 +93,31 @@ export class FilesService {
     }
   }
 
-  async getFileGroupsWithMeta(): Promise<FileGroup[]> {
-    return await this.fileGroupRepository.find({
+  async getFileGroupsWithMeta(userId: number, active: string): Promise<FileGroup[]> {
+    const options: any = {
       relations: ['files', 'user_id'],
       select: {
         id: true,
         group_name: true,
         createdAt: true,
+        updatedAt: true,
         user_id: {
           id_usuario: true,
           usuario: true,
           profile_img: true,
         },
       },
-    });
+    };
+
+    // Aplicar el filtro solo si userId es diferente de 1
+    if (userId === 1) {
+      options.where = { active };
+    }
+    // Aplicar el filtro solo si userId es diferente de 1
+    if (userId !== 1) {
+      options.where = { user_id: { id_usuario: userId }, active };
+    }
+    return await this.fileGroupRepository.find(options);
   }
 
   async findFileById(id: number): Promise<Files | undefined> {
