@@ -3,6 +3,8 @@
 /node_modules
 /uploads
 .env
+usuarios.txt
+notes.txt
 
 # Logs
 logs
